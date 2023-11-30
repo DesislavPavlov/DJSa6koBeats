@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song Order Table</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .template-row {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Song Order Table</h2>
+
+<table id="songTable">
+  <thead>
+    <tr>
+      <th>Sender</th>
+      <th>Message</th>
+      <th>Song Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Template row -->
+    <tr class="template-row">
+      <td class="sender"></td>
+      <td class="message"></td>
+      <td class="song-name"></td>
+    </tr>
+  </tbody>
+</table>
+
+<button onclick="addSong()">Add Song</button>
+
+<script>
+  function addSong() {
+    // Clone the template row
+    const templateRow = document.querySelector('.template-row');
+    const newRow = templateRow.cloneNode(true);
+    newRow.classList.remove('template-row');
+
+    // Set values for the new row (you can get these values from user input)
+    newRow.querySelector('.sender').textContent = 'New Sender';
+    newRow.querySelector('.message').textContent = 'New Message';
+    newRow.querySelector('.song-name').textContent = 'New Song Name';
+
+    // Append the new row to the table body
+    const tableBody = document.querySelector('#songTable tbody');
+    tableBody.appendChild(newRow);
+  }
+</script>
+
+</body>
+</html>

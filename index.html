@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sa6ko Beats</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="title.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+      <div class="center">
+        <h1>
+          <span>Sa6koBeats</span>
+        
+          <span>Sa6koBeats</span>
+          <span>Sa6koBeats</span>
+        
+        </h1>
+      </div>
+    </header>
+
+    <main>
+      <audio id="audioElement" src=""></audio>
+      <audio id="transitionAudioElement" src=""></audio>
+
+      <section id="topSection">
+        <div class="text-slider">
+          <p>Currently playing:</p>
+          <div class="slider-content" id="sliderContent">
+            <h2 id="songNameText">No song playing</h2>
+          </div>
+        </div>
+
+        <button class="button">Song List</button>
+        <button class="button" onclick="toggleNewSongSection()">New Song</button>
+      </section>
+
+      <section id="songTableSection">
+        <table id="songTable">
+          <thead>
+            <tr>
+              <th>Sender</th>
+              <th>Message</th>
+              <th>Song Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Template row -->
+            <tr class="template-row">
+              <td class="sender"></td>
+              <td class="message"></td>
+              <td class="song-name"></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="newSongSection">
+        <div id="newSongTitle"><h3>Add New Song!</h3></div>
+
+        <form action="" id="newSongForm">
+          <div>
+            <div>
+              <label for="sender">Sender / Reciever:</label>
+              <input id="sender" name="sender" type="text" placeholder="Anonymous">
+            </div>
+            <div>
+              <label for="message">Message:</label>
+              <textarea id="message" name="message" cols="30" rows="10" placeholder="No message"></textarea>
+            </div>
+          </div>
+          <div id="inputContainer">
+            <label id="audioFileInputLabel" class="button" for="audioFileInput">Select Audio Files</label>
+            <input id="audioFileInput" class="d-none" name="audioFileInput" type="file" accept="audio/*" multiple>
+              
+            <button class="button" onclick="addNewSong()">OK</button>
+            <button class="button" type="reset" onclick="toggleNewSongSection()">X</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="playerSection">
+        <div id="playDiv">
+          <label for="audioLength">CONTROLS</label>
+          <input id="audioLength" name="audioLength" type="range" min="0" max="100" step="1" onchange="fadeTimeSkip(event)">
+          <h5 id="timeText">0:00 / 0:00</h5>
+           <div>
+            <i class="bi bi-skip-start-fill" onclick="transitionSong(false)"></i>
+            <i id="playButton" class="bi bi-play-fill" onclick="toggleAudio()"></i>
+            <i class="bi bi-skip-end-fill" onclick="transitionSong(true)"></i>
+          </div>
+        </div>
+
+        <div id="volumeDiv">
+          <label for="audioVolume">VOLUME</label>
+          <input id="audioVolume" name="audioVolume" type="range" min="0" max="1" step="0.1" onchange="fadeVolume(event)">
+        </div>
+      </section>
+
+      <section id="requestInfoSection">
+        <div>
+          <h4>Sender / Reciever:</h4>
+          <p id="senderText">Anonymous</p>
+        </div>
+
+        <div>
+          <h4>Message:</h4>
+          <p id="messageText">No message</p>
+        </div>
+      </section>
+    </main>
+
+      <script src="./app.js"></script>
+</body>
+</html>
