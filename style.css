@@ -318,3 +318,31 @@ form button:nth-child(4):active {
   color: white;
   font-size: 1.5em;
 }
+
+
+/* Song Table Section */
+#songTableSection {
+}
+
+#songTableSection table {
+  border-collapse: collapse;
+  margin: 100px auto;
+  width: 80%;
+  color: white;
+}
+
+th, td {
+  border: 1px solid #555;
+  padding: 8px;
+  text-align: left;
+  color: rgb(233, 233, 233);
+}
+
+tr td:nth-child(1), tr td:nth-child(2) {
+  width: 100px;
+  color: red;
+}
+
+tr td:nth-child(3) {
+  width: 500px;
+}
