@@ -3,10 +3,9 @@ const transitionAudioElement = document.getElementById("transitionAudioElement")
 const newSongSection = document.getElementById("newSongSection");
 newSongSection.hidden = true;
 
-// { sender: "Anonymous", message: "No message sent", song: { name: "No song playing" } }
 let playlist = [];
 let currentSongTracker = 0;
-let fadeInInterval, fadeOutInterval;
+let fadeInInterval, fadeOutInterval, transitoryFadeInterval;
 
 function toggleNewSongSection() {
     if (!newSongSection.hidden) {
@@ -30,32 +29,46 @@ function addNewSong() {
         const newSongObject = { sender: sender, message: message, songSrc: songSrc, songName: file.name, songTime: 0};
         playlist.push(newSongObject);
     }
-    
-    form.onsubmit = (e) => {
-        e.preventDefault();
-        form.reset();
-        toggleNewSongSection();
-    };
-    
-    updateData();
 }
 
 function updateData() {
-    const songNameText = document.getElementById("songNameText");
-    const senderText = document.getElementById("senderText");
-    const messageText = document.getElementById("messageText");
     const currentSong = playlist[currentSongTracker];
 
-    senderText.innerText = currentSong.sender;
-    messageText.innerText = currentSong.message;
+    // Update table
+    const tableBody = document.getElementById("tableBody");
+    if (tableBody.children.length !== playlist.length) {
+        tableBody.innerHTML = "";
+        for (const song of playlist) {
+            tableBody.prepend(newRow(song));
+        }
+    }
+
+    const children = Array.from(tableBody.children).reverse();
+    children.forEach((x) => x.classList.remove("active"));
+    children[currentSongTracker].classList.add("active");
+
+
+
+    // Update song name
+    const songNameText = document.getElementById("songNameText");
     songNameText.innerText = currentSong.songName;
 
-    // Add song list entry
+    // Update play/pause button
+    const playButton = document.getElementById("playButton");
+    const pauseButton = document.getElementById("pauseButton");
+    if (audioElement.paused || fadeOutInterval) {
+        playButton.hidden = false;
+        pauseButton.hidden = true;
+    }
+    else {
+        playButton.hidden = true;
+        pauseButton.hidden = false;
+    }
 
-    let timeCheckInterval = setInterval(() => {
-        updateTime();
+    // Update timer
+    updateTime();
+    if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
-    }, 1000);
 }
 
 function updateTime() {
@@ -72,6 +85,7 @@ function updateTime() {
     songSeconds = addZeros(Math.floor(audioElement.duration - songMinutes * 60));
     timeOutput += `${songMinutes}:${songSeconds}`;
 
+    timeOutput = timeOutput.replace(/NaN/g, "00");
     timeText.innerText = timeOutput;
 
     // Progression bar
@@ -87,53 +101,40 @@ function updateTime() {
 }
 
 function toggleAudio() {
-    togglePlayButton();
-    if(audioElement.currentTime === 0) {
-        audioElement.src = playlist[currentSongTracker].songSrc;
-    }
-
     if (!audioElement.paused) {
         setFadeInterval("out");
     } 
     else {
+        audioElement.src = playlist[currentSongTracker].songSrc;
         audioElement.currentTime = playlist[currentSongTracker].songTime;
-        audioElement.volume = 0;
         setFadeInterval("in");
-        updateData();
-    }
-
-    function togglePlayButton() {
-        const playButton = document.getElementById("playButton");
-        if (playButton.classList.contains("bi-play-fill")) {
-            playButton.classList.remove("bi-play-fill");
-            playButton.classList.add("bi-pause-fill");
-        }
-        else {
-            playButton.classList.remove("bi-pause-fill");
-            playButton.classList.add("bi-play-fill");
-        }
     }
 }
 
 function transitionSong(next) {
-    if (audioElement.paused) 
+    if (next && currentSongTracker < playlist.length - 1)
+        currentSongTracker++;
+    else if (!next && currentSongTracker > 0)
+        currentSongTracker--;
+    else 
         return;
 
-    setFadeInterval("out");
-    if (next)
-        currentSongTracker++;
-    else 
-        currentSongTracker--;
+    if (audioElement.paused)
+        return;
 
+    createTransitoryAudio();
+
+    audioElement.pause();
     setTimeout(() => {
-        audioElement.src = playlist[currentSongTracker].songSrc;
-        setFadeInterval("in");
-        updateData();
-    }, 2600);
+            audioElement.src = playlist[currentSongTracker].songSrc;
+            setFadeInterval("in");
+    }, 1100);
 }
 
-function setFadeInterval(fade) {
-    // Clear previous (if any)
+
+
+function setFadeInterval(fade, audioSource = audioElement) {
+    // Clear intervals (if any)
     if (fadeInInterval) {
         clearInterval(fadeInInterval);
     }
@@ -143,13 +144,15 @@ function setFadeInterval(fade) {
 
     // Set new
     if (fade === "in") {
-        audioElement.play();
+        audioSource.volume = 0;
+        audioSource.play();
         fadeInInterval = setInterval(() => {
             try {
-                audioElement.volume += 0.083;
+                audioSource.volume += 0.083;
             } catch (error) {
-                audioElement.volume = 1;
+                audioSource.volume = 1;
                 clearInterval(fadeInInterval);
+                fadeInInterval = null;
             }
             document.getElementById("audioVolume").value = audioElement.volume;
         }, 200);
@@ -157,14 +160,34 @@ function setFadeInterval(fade) {
     else if (fade === "out") {
         fadeOutInterval = setInterval(() => {
             try {
-                audioElement.volume -= 0.083;
+                audioSource.volume -= 0.083;
             } catch (error) {
-                audioElement.volume = 0;
-                audioElement.pause();
+                audioSource.volume = 0;
+                audioSource.pause();
                 clearInterval(fadeOutInterval);
+                fadeOutInterval = null;
             }
             document.getElementById("audioVolume").value = audioElement.volume;
         }, 200);
+    }
+    else if (fade === "transitory") {
+        if (transitoryFadeInterval) {
+            clearInterval(transitoryFadeInterval);
+        }
+
+        transitoryFadeInterval = setInterval(() => {
+            try {
+                audioSource.volume -= 0.083;
+            } catch (error) {
+                audioSource.volume = 0;
+                audioSource.pause();
+                clearInterval(transitoryFadeInterval);
+            }
+        }, 150);
+
+        setTimeout(() => {
+            audioSource.pause();
+        }, 1950);
     }
 }
 
@@ -198,35 +221,59 @@ function fadeVolume(e) {
 }
 
 function fadeTimeSkip(e) {
-    if (audioElement.paused)
-        return;
-
-    const transitoryAudio = new Audio(audioElement.src);
-    transitoryAudio.currentTime = audioElement.currentTime + 0.1;
-    transitoryAudio.play();
-
-    let transitoryFadeInterval = setInterval(() => {
-        try {
-            transitoryAudio.volume -= 0.083;
-        } catch (error) {
-            transitoryAudio.volume = 0;
-            transitoryAudio.pause();
-            clearInterval(transitoryFadeInterval);
-        }
-    }, 150);
-
     const newTime = e.target.value;
+    if (audioElement.paused) {
+        audioElement.currentTime = newTime;
+        return;
+    }
+
+    createTransitoryAudio();
+
     audioElement.pause();
-    audioElement.volume = 0;
     setTimeout(() => {
             audioElement.currentTime = newTime;
             setFadeInterval("in");
     }, 1100);
 }
 
+function createTransitoryAudio() {
+    const transitoryAudio = new Audio(audioElement.src);
+    transitoryAudio.currentTime = audioElement.currentTime + 0.1;
+    transitoryAudio.play();
+    setFadeInterval("transitory", transitoryAudio);
+}
+
+
+
+function newRow(song) {
+    const rowTemplate = document.getElementById("templateRow");
+    const newRow = rowTemplate.content.cloneNode(true);
+    
+    newRow.querySelector(".sender").innerText = song.sender;
+    newRow.querySelector(".message").innerText = song.message;
+    newRow.querySelector(".song-name").innerText = song.songName;
+
+    return newRow;
+}
+
+function handleFormSubmit() {
+    e.preventDefault();
+    form.reset();
+    toggleNewSongSection();
+}
+
+function handleFormReset() {
+    document.getElementById("audioFileInputCounter").innerText = "";
+}
+
+
+
 window.onbeforeunload = () => savePlaylist();
 window.onload = () => loadPlaylist();
-
+document.getElementById("audioFileInput").addEventListener("change", (e) => document.getElementById("audioFileInputCounter").innerText = `Files selected: ${e.target.files.length}`);
+setInterval(() => {
+    updateData();
+}, 250);
 
 
 

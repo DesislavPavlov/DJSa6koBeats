@@ -33,14 +33,13 @@
           </div>
         </div>
 
-        <button class="button">Song List</button>
         <button class="button" onclick="toggleNewSongSection()">New Song</button>
       </section>
 
       <section id="newSongSection">
         <div id="newSongTitle"><h3>Add New Song!</h3></div>
 
-        <form action="" id="newSongForm">
+        <form action="" id="newSongForm" onreset="handleFormReset()" onsubmit="handleFormSubmit()">
           <div>
             <div>
               <label for="sender">Sender / Reciever:</label>
@@ -53,6 +52,7 @@
           </div>
           <div id="inputContainer">
             <label id="audioFileInputLabel" class="button" for="audioFileInput">Select Audio Files</label>
+            <p id="audioFileInputCounter"></p>
             <input id="audioFileInput" class="d-none" name="audioFileInput" type="file" accept="audio/*" multiple>
               
             <button class="button" onclick="addNewSong()">OK</button>
@@ -69,6 +69,7 @@
            <div>
             <i class="bi bi-skip-start-fill" onclick="transitionSong(false)"></i>
             <i id="playButton" class="bi bi-play-fill" onclick="toggleAudio()"></i>
+            <i id="pauseButton" class="bi bi-pause-fill" onclick="toggleAudio()" hidden="true"></i>
             <i class="bi bi-skip-end-fill" onclick="transitionSong(true)"></i>
           </div>
         </div>
@@ -79,37 +80,29 @@
         </div>
       </section>
 
-      <section id="requestInfoSection">
-        <div>
-          <h4>Sender / Reciever:</h4>
-          <p id="senderText">Anonymous</p>
-        </div>
-
-        <div>
-          <h4>Message:</h4>
-          <p id="messageText">No message</p>
-        </div>
-      </section>
-
       <section id="songTableSection">
         <table id="songTable">
           <thead>
             <tr>
-              <th>Sender</th>
+              <th>Sender / Reciever</th>
               <th>Message</th>
               <th>Song Name</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tableBody">
             <!-- Template row -->
-            <tr class="template-row">
-              <td class="sender">aaa</td>
-              <td class="message">LOREMIPSUMDOLORSIMATET KSKSksakskmaksmakzmkamzamkmdmafjnajfajfkjdnhdgbingiabigwngibInIBIubIUbiugwbibidbgiuIUBGUIABIBIGBSDIGBDNGSDNGSDOMGOISDNGOSDNGON OIGOSG SNONIO NSNGOSNG NSK NSO NNOON NSO NNn onl nsnfdsjnfong</td>
-              <td class="song-name">ccc</td>
-            </tr>
+            
           </tbody>
         </table>
       </section>
+      
+      <template id="templateRow">
+        <tr>
+          <td class="sender">OT grobarq do motikarskoto-devoi4e</td>
+          <td class="message">LOREMIPSUMDOLORSIMATET  OIGOSG SNONIO NSNGOSNG NSK NSO NNOON NSO NNn onl nsnfdsjnfong</td>
+          <td class="song-name">AZIS & USTATA Tochno sega АЗИС и УСТАТА - Точно сега, 2005.mp3</td>
+        </tr>
+      </template>
     </main>
 
       <script src="./app.js"></script>

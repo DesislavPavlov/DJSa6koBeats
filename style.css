@@ -76,26 +76,14 @@ body{
 }
 
 #topSection button:nth-child(2) {
-  background-color: rgb(12, 96, 198);
-}
-
-#topSection button:nth-child(2):hover {
-  background-color: rgb(7, 49, 99);
-}
-
-#topSection button:nth-child(2):active {
-  background-color: rgb(5, 33, 68);
-}
-
-#topSection button:nth-child(3) {
   background-color: rgb(15, 180, 89);
 }
 
-#topSection button:nth-child(3):hover {
+#topSection button:nth-child(2):hover {
   background-color: rgb(8, 108, 53);
 }
 
-#topSection button:nth-child(3):active {
+#topSection button:nth-child(2):active {
   background-color: rgb(6, 80, 39);
 }
 
@@ -128,7 +116,7 @@ form {
   margin-top: 50px;
   padding: 40px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-content: center;
 }
 
@@ -175,33 +163,37 @@ form label {
   background-color: rgb(19, 70, 133);
 }
 
+#audioFileInputCounter {
+  color: white;
+}
+
 form button {
   font-size: 1.15em;
   width: 115px;
   height: 57.5px;
 }
 
-form button:nth-child(3) {
+form button:nth-child(4) {
   background-color: rgb(31, 162, 90);
 }
 
-form button:nth-child(3):hover {
+form button:nth-child(4):hover {
   background-color: rgb(16, 123, 64);
 }
 
-form button:nth-child(3):active {
+form button:nth-child(4):active {
   background-color: rgb(14, 99, 52);
 }
 
-form button:nth-child(4) {
+form button:nth-child(5) {
   background-color: rgb(187, 35, 35);
 }
 
-form button:nth-child(4):hover {
+form button:nth-child(5):hover {
   background-color: rgb(135, 26, 26);
 }
 
-form button:nth-child(4):active {
+form button:nth-child(5):active {
   background-color: rgb(106, 21, 21);
 }
 
@@ -321,28 +313,44 @@ form button:nth-child(4):active {
 
 
 /* Song Table Section */
-#songTableSection {
+table {
+  width: 95%;
+  margin: 100px auto;
+  border: 1px solid #555;  
+  color: white;
+  border-collapse: collapse;
 }
 
-#songTableSection table {
-  border-collapse: collapse;
-  margin: 100px auto;
-  width: 80%;
-  color: white;
+thead {
+  background-color: #292929;
+}
+
+tr {
+  display: block;
+  padding: 2.5px 0;
+  border-bottom: 1px solid #555;
 }
 
 th, td {
-  border: 1px solid #555;
+  display: inline-block;
+  width: 24%;
+  height: fit-content;
   padding: 8px;
-  text-align: left;
   color: rgb(233, 233, 233);
+  text-align: left;
+  font-size: 1.1em;
+  overflow: hidden;
 }
 
-tr td:nth-child(1), tr td:nth-child(2) {
-  width: 100px;
-  color: red;
+td:nth-child(3), th:nth-child(3) {
+  width: 45%;
+  text-align: center;
 }
 
-tr td:nth-child(3) {
-  width: 500px;
+th {
+  font-size: 1.3em;
+}
+
+table .active {
+  background-color: rgba(23, 135, 204, 0.445);
 }
