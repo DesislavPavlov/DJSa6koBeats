@@ -2,6 +2,16 @@ const audioElement = document.getElementById("audioElement");
 const transitionAudioElement = document.getElementById("transitionAudioElement");
 const newSongSection = document.getElementById("newSongSection");
 newSongSection.hidden = true;
+const transitions = [
+    new Audio("./transitions/transition1.wav"),
+    new Audio("./transitions/transition2.wav"),
+    new Audio("./transitions/transition3.wav"),
+    new Audio("./transitions/transition4.wav"),
+    new Audio("./transitions/transition5.wav"),
+    new Audio("./transitions/transition6.wav"),
+    new Audio("./transitions/transition7.wav"),
+    new Audio("./transitions/transition8.wav"),
+];
 
 let playlist = [];
 let currentSongTracker = 0;
@@ -70,7 +80,7 @@ function updateData() {
     updateTime();
     if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
-    if (currentSong.songTime > audioElement.duration - 5) {
+    if (currentSong.songTime > audioElement.duration - 10) {
         currentSong.songTime = 0;
         transitionSong(true);
     }
@@ -132,7 +142,8 @@ function transitionSong(next) {
         audioElement.currentTime = 0;
         return;
     }
-
+    
+    playRandomTransition();
     createTransitoryAudio();
 
     audioElement.pause();
@@ -254,6 +265,11 @@ function createTransitoryAudio() {
     setFadeInterval("transitory", transitoryAudio);
 }
 
+function playRandomTransition() {
+    let rnd = Math.floor(Math.random() * transitions.length);
+    const transition = transitions[rnd];
+    transition.play();
+}
 
 
 function newRow(song) {
