@@ -122,15 +122,18 @@ function transitionSong(next) {
     else 
         return;
 
-    if (audioElement.paused)
+
+    if (audioElement.paused) {
+        playlist[currentSongTracker].songTime = 0;
         return;
+    }
 
     createTransitoryAudio();
 
     audioElement.pause();
     setTimeout(() => {
-            audioElement.src = playlist[currentSongTracker].songSrc;
-            setFadeInterval("in");
+        audioElement.src = playlist[currentSongTracker].songSrc;
+        setFadeInterval("in");
     }, 1100);
 }
 
