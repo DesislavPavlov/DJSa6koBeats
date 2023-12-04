@@ -6,6 +6,7 @@ newSongSection.hidden = true;
 let playlist = [];
 let currentSongTracker = 0;
 let fadeInInterval, fadeOutInterval, transitoryFadeInterval;
+let progressionBarInputting = false;
 
 function toggleNewSongSection() {
     if (!newSongSection.hidden) {
@@ -89,8 +90,10 @@ function updateTime() {
     timeText.innerText = timeOutput;
 
     // Progression bar
-    progressionBar.max = audioElement.duration;
-    progressionBar.value = audioElement.currentTime;
+    if (!progressionBarInputting) {
+        progressionBar.max = audioElement.duration;
+        progressionBar.value = audioElement.currentTime;
+    }
 
     function addZeros(time) {
         if (time < 10) 
@@ -256,9 +259,9 @@ function newRow(song) {
     return newRow;
 }
 
-function handleFormSubmit() {
+function handleFormSubmit(e) {
     e.preventDefault();
-    form.reset();
+    e.target.reset();
     toggleNewSongSection();
 }
 
@@ -271,6 +274,8 @@ function handleFormReset() {
 window.onbeforeunload = () => savePlaylist();
 window.onload = () => loadPlaylist();
 document.getElementById("audioFileInput").addEventListener("change", (e) => document.getElementById("audioFileInputCounter").innerText = `Files selected: ${e.target.files.length}`);
+document.getElementById("audioLength").onmousedown = () => progressionBarInputting = true;
+document.getElementById("audioLength").onmouseup = () => progressionBarInputting = false;
 setInterval(() => {
     updateData();
 }, 250);
