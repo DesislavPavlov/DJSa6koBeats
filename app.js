@@ -70,6 +70,8 @@ function updateData() {
     updateTime();
     if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
+    if (audioElement.currentTime > audioElement.duration - 5)
+        transitionSong(true);
 }
 
 function updateTime() {
@@ -125,6 +127,7 @@ function transitionSong(next) {
 
     if (audioElement.paused) {
         playlist[currentSongTracker].songTime = 0;
+        audioElement.currentTime = 0;
         return;
     }
 
