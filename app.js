@@ -70,8 +70,10 @@ function updateData() {
     updateTime();
     if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
-    if (audioElement.currentTime > audioElement.duration - 5)
+    if (currentSong.songTime > audioElement.duration - 5) {
+        currentSong.songTime = 0;
         transitionSong(true);
+    }
 }
 
 function updateTime() {
