@@ -297,6 +297,12 @@ function handleFormReset() {
 
 window.onbeforeunload = () => savePlaylist();
 window.onload = () => loadPlaylist();
+window.onkeydown = (e) => {
+    if (e.code === "Space") {
+        e.preventDefault();
+        toggleAudio();
+    }
+}
 document.getElementById("audioFileInput").addEventListener("change", (e) => document.getElementById("audioFileInputCounter").innerText = `Files selected: ${e.target.files.length}`);
 document.getElementById("audioLength").onmousedown = () => progressionBarInputting = true;
 document.getElementById("audioLength").onmouseup = () => progressionBarInputting = false;
