@@ -2,16 +2,6 @@ const audioElement = document.getElementById("audioElement");
 const transitionAudioElement = document.getElementById("transitionAudioElement");
 const newSongSection = document.getElementById("newSongSection");
 newSongSection.hidden = true;
-const transitions = [
-    new Audio("./transitions/transition1.wav"),
-    new Audio("./transitions/transition2.wav"),
-    new Audio("./transitions/transition3.wav"),
-    new Audio("./transitions/transition4.wav"),
-    new Audio("./transitions/transition5.wav"),
-    new Audio("./transitions/transition6.wav"),
-    new Audio("./transitions/transition7.wav"),
-    new Audio("./transitions/transition8.wav"),
-];
 
 let playlist = [];
 let currentSongTracker = 0;
@@ -40,6 +30,9 @@ function addNewSong() {
         const newSongObject = { sender: sender, message: message, songSrc: songSrc, songName: file.name, songTime: 0};
         playlist.push(newSongObject);
     }
+
+    if (playlist.length > 30)
+        playlist.splice(0, playlist.length - 30);
 }
 
 function updateData() {
@@ -81,7 +74,6 @@ function updateData() {
     if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
     if (currentSong.songTime > audioElement.duration - 10) {
-        currentSong.songTime = 0;
         transitionSong(true);
     }
 }
@@ -143,14 +135,14 @@ function transitionSong(next) {
         return;
     }
     
-    playRandomTransition();
     createTransitoryAudio();
 
     audioElement.pause();
     setTimeout(() => {
         audioElement.src = playlist[currentSongTracker].songSrc;
+        audioElement.currentTime = 5;
         setFadeInterval("in");
-    }, 1100);
+    }, 400);
 }
 
 
@@ -264,13 +256,6 @@ function createTransitoryAudio() {
     transitoryAudio.play();
     setFadeInterval("transitory", transitoryAudio);
 }
-
-function playRandomTransition() {
-    let rnd = Math.floor(Math.random() * transitions.length);
-    const transition = transitions[rnd];
-    transition.play();
-}
-
 
 function newRow(song) {
     const rowTemplate = document.getElementById("templateRow");
