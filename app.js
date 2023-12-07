@@ -40,18 +40,14 @@ function updateData() {
 
     // Update table
     const tableBody = document.getElementById("tableBody");
-    if (tableBody.children.length !== playlist.length) {
-        tableBody.innerHTML = "";
-        for (const song of playlist) {
-            tableBody.prepend(newRow(song));
-        }
+    tableBody.innerHTML = "";
+    for (const song of playlist) {
+        tableBody.prepend(newRow(song));
     }
 
     const children = Array.from(tableBody.children).reverse();
     children.forEach((x) => x.classList.remove("active"));
     children[currentSongTracker].classList.add("active");
-
-
 
     // Update song name
     const songNameText = document.getElementById("songNameText");
@@ -73,7 +69,9 @@ function updateData() {
     updateTime();
     if (!audioElement.paused) 
         currentSong.songTime = audioElement.currentTime;
+    
     if (currentSong.songTime > audioElement.duration - 10) {
+        currentSong.songTime = 0;
         transitionSong(true);
     }
 }

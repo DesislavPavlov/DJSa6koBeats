@@ -37,28 +37,32 @@
       </section>
 
       <section id="newSongSection">
-        <div id="newSongTitle"><h3>Add New Song!</h3></div>
+        <div id="newSongPopup">
+          <div id="newSongTitle"><h3>Add New Song!</h3></div>
 
-        <form action="" id="newSongForm" onreset="handleFormReset()" onsubmit="handleFormSubmit(event)">
-          <div>
+          <form action="" id="newSongForm" onreset="handleFormReset()" onsubmit="handleFormSubmit(event)">
             <div>
-              <label for="sender">Sender / Reciever:</label>
-              <input id="sender" name="sender" type="text" placeholder="Anonymous">
+              <div>
+                <label for="sender">Sender / Reciever:</label>
+                <input id="sender" name="sender" type="text" placeholder="Anonymous">
+              </div>
+              <div>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" cols="30" rows="10" placeholder="No message"></textarea>
+              </div>
+            </div>
+            <div id="inputContainer">
+              <label id="audioFileInputLabel" class="button" for="audioFileInput">Select Audio Files</label>
+              <input id="audioFileInput" class="d-none" name="audioFileInput" type="file" accept="audio/*" multiple>
+                
+              <button class="button" type="reset" onclick="toggleNewSongSection()">X</button>
+              <button class="button" onclick="addNewSong()">OK</button>
             </div>
             <div>
-              <label for="message">Message:</label>
-              <textarea id="message" name="message" cols="30" rows="10" placeholder="No message"></textarea>
+              <p id="audioFileInputCounter"></p>
             </div>
-          </div>
-          <div id="inputContainer">
-            <label id="audioFileInputLabel" class="button" for="audioFileInput">Select Audio Files</label>
-            <p id="audioFileInputCounter"></p>
-            <input id="audioFileInput" class="d-none" name="audioFileInput" type="file" accept="audio/*" multiple>
-              
-            <button class="button" onclick="addNewSong()">OK</button>
-            <button class="button" type="reset" onclick="toggleNewSongSection()">X</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </section>
 
       <section id="playerSection">
