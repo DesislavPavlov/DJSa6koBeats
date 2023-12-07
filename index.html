@@ -23,7 +23,6 @@
 
     <main>
       <audio id="audioElement" src=""></audio>
-      <audio id="transitionAudioElement" src=""></audio>
 
       <section id="topSection">
         <div class="text-slider">
@@ -84,6 +83,23 @@
         </div>
       </section>
 
+      <section id="soundboardSection">
+        <div class="button">
+          <img class="sound-image" src="./soundboard/soundboard_images/sashkoImage.png" alt="" onclick="playSoundboardSound(event)">
+          <audio class="sound" src="./soundboard/sashko.wav"></audio>
+        </div>
+
+        <div class="button">
+          <img class="sound-image" src="./soundboard/soundboard_images/airhorn1Image.png" alt="" onclick="playSoundboardSound(event)">
+          <audio class="sound" src="./soundboard/airhorn1.wav"></audio>
+        </div>
+
+        <div class="button">
+          <img class="sound-image" src="./soundboard/soundboard_images/airhorn2Image.png" alt="" onclick="playSoundboardSound(event)">
+          <audio class="sound" src="./soundboard/airhorn2.wav"></audio>
+        </div>
+      </section>
+
       <section id="songTableSection">
         <table id="songTable">
           <thead>
@@ -94,8 +110,7 @@
             </tr>
           </thead>
           <tbody id="tableBody">
-            <!-- Template row -->
-            
+
           </tbody>
         </table>
       </section>

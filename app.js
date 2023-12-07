@@ -1,5 +1,4 @@
 const audioElement = document.getElementById("audioElement");
-const transitionAudioElement = document.getElementById("transitionAudioElement");
 const newSongSection = document.getElementById("newSongSection");
 newSongSection.hidden = true;
 
@@ -264,6 +263,12 @@ function newRow(song) {
     newRow.querySelector(".song-name").innerText = song.songName;
 
     return newRow;
+}
+
+function playSoundboardSound(e) {
+    const parent = e.target.parentNode;
+    const audio = new Audio(parent.querySelector("audio").src);
+    audio.play();
 }
 
 function handleFormSubmit(e) {
